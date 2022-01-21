@@ -1,7 +1,7 @@
 module LogSchema;
 
 export {
-	global log_handler: function(streams: vector of Log::Stream);
+	global log_handler: function(streams: vector of Log::Stream) &redef;
 }
 
 function json_schema_for_record(info: record_field_table, rec: any): string {
@@ -57,9 +57,9 @@ function json_schema(streams: vector of Log::Stream): string
 	}
 
 
-function log_handler(streams: vector of Log::Stream) {
+redef log_handler = function(streams: vector of Log::Stream) {
 	print json_schema(streams);
-}
+};
 
 event zeek_init() &priority=-10000
 	{
