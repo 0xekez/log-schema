@@ -1,8 +1,8 @@
+## Defines a custom log formatter which prints the number of log
+## streams.
+
+
 redef LogSchema::log_handler = function(streams: vector of Log::Stream)
 	{
-	print streams;
+	print |streams|;
 	};
-
-event zeek_init() {
-	print LogSchema::log_handler;
-}

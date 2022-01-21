@@ -46,7 +46,10 @@ function json_schema(streams: vector of Log::Stream): string
 		const stream = streams[i];
 		const info = stream$columns;
 		const fields = record_fields(info);
-		res += fmt("\"%s\":%s", stream$path, json_schema_for_record(fields, info));
+
+		const path = stream?$path ? stream$path : cat(info);
+
+		res += fmt("\"%s\":%s", path, json_schema_for_record(fields, info));
 		}
 	return "{" +
                    "\"$schema\":\"https://json-schema.org/draft/2020-12/schema\"," +

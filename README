@@ -1,4 +1,44 @@
 LogSchema
 =================================
 
-TODO: tell people what your package does!
+A Zeek package for printing the format of Zeek's logs using the [JSON
+Schema](https://json-schema.org/) format.
+
+## Installation
+
+Clone this repository and then run `zkg install .`. For instructions
+on getting `zkg` see the Zeek package manager
+[documentation](https://packages.zeek.org/).
+
+## Usage
+
+```
+zeek <whatever scripts you normally load> log-schema
+```
+
+For example, if my typical Zeek invocation looked like `zeek
+interesting-logs.zeek` to dump the JSON Schema of the logs that
+invocation will create I would run `zeek interesting-logs.zeek
+log-schema`.
+
+## How it works
+
+A low priority `zeek_init` event is registered which iterates over
+[`Log::active_streams`](https://docs.zeek.org/en/master/scripts/base/frameworks/logging/main.zeek.html?highlight=active_streams#id-Log::active_streams)
+, seriaizes them to JSON, writes them to standard out, and then calls
+[`terminate()`](https://docs.zeek.org/en/master/scripts/base/bif/zeek.bif.zeek.html?highlight=terminate#id-terminate).
+
+## Using your own schema format
+
+Redefine `LogSchema::log_handler` with your own handler function. For
+example, to print only the number of log streams present:
+
+```zeek
+redef LogSchema::log_handler = function(streams: vector of Log::Stream)
+	{
+	print |streams|;
+	};
+```
+
+Note that there is no requirement that the logs are printed to
+standard out.
